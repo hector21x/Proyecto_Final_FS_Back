@@ -1,60 +1,65 @@
 'use strict';
-const modelUser = require('../model/user.js');
+const {
+    saveStudentService,
+    updateStudentService,
+    deleteStudentService,
+    findOneStudentService,
+    findAllStudentService,
+} = require('../service/user')
 
 
 const getUser = async (req, res) => {
-    try {
-        const allItems = await modelUser.findOne({ _id: req.params.id });
-        res.status(200).send({ data: allItems })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ error: 'AH OCURRIDO UN ERROR' })
+    const identification = req.params._id;
+    const response = await findOneStudentService(identification);
+    if (response.length > 0) {
+        res.json({ response });
+    } else {
+        res.status(204).send();
     }
 };
 
 
 const getUsers = async (req, res) => {
-    try {
-        const allItems = await modelUser.find({})
-        res.status(200).send({ data: allItems })
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ error: 'AH OCURRIDO UN ERROR' })
+    const response = await findAllStudentService();
+    if (response.length > 0) {
+        res.json({ students: response });
+    } else {
+        res.status(204);
     }
 };
 
 
 const createUser = async (req, res) => {
-    try {
-        const data= req.body
-        modelUser.create(data)
-        res.status(200).send({data});
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ error: 'AH OCURRIDO UN ERROR' })
+    const { name, password, email } = req.body;
+    const response = await saveStudentService(name, password, email);
+    if (response !== "") {
+        res.json({ identification: response });
+    } else {
+        res.status(400).json({ error: "error when creating student" });
     }
 };
 
 
 const updateUser = async (req, res) => {
-    try {
-        const userUpdate = await modelUser.findOneAndUpdate({ _id: req.params.id });
-        res.status(200).send({ data: userUpdate });
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ error: 'AH OCURRIDO UN ERROR' })
+    const { name, password, email } = req.body;
+    const _id = req.params._id;
+    const response = await updateStudentService(_id, name, password, email);
+    if (response > 0) {
+        res.json({ message: "student updated successfully" });
+    } else {
+        res.status(400).json({ error: "error when updating student" });
     }
 };
 
 
 const deleteUser = async (req, res) => {
-    try {
-        const Userdelete = await modelUser.findOneAndDelete({ _id: req.params.id });
-        res.status(200).send({ data: Userdelete })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ error: 'AH OCURRIDO UN ERROR' })
+    const _id = req.params._id;
+    const response = await deleteStudentService(_id);
+    if (response > 0) {
+        res.json({ message: "student deleted successfully" });
+        res.status(200);
+    } else {
+        res.status(404).json({ message: "student not found" });
     }
 };
 
