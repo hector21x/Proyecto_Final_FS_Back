@@ -9,8 +9,8 @@ const {
 
 
 const getUser = async (req, res) => {
-    const identification = req.params._id;
-    const response = await findOneStudentService(identification);
+    const _id = req.params._id;
+    const response = await findOneStudentService(_id);
     if (response.length > 0) {
         res.json({ response });
     } else {

@@ -47,9 +47,9 @@ const deleteStudentService = async (_id) => {
 };
 
 
-const findOneStudentService = async (identification) => {
+const findOneStudentService = async (_id) => {
     try {
-        const student = await modelUser.find({ identification })
+        const student = await modelUser.find({ _id })
             .select("-_id")
             .select("-__v");
         return student;
