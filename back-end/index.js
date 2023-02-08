@@ -1,8 +1,6 @@
 const app = require('./app.js');
-const mongoDBConnect = require('./config/mongo.js');
+require('./config/mongo.js');
 
-
-mongoDBConnect();
 
 const port = 3000;
 

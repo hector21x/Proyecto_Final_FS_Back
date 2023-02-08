@@ -1,16 +1,70 @@
-'use strict';
 const {
     saveStudentService,
     updateStudentService,
     deleteStudentService,
     findOneStudentService,
     findAllStudentService,
-} = require('../service/user')
+} = require('../service/user.js');
 
+/**
+ * Función usada para llamar al servicio
+ * correspondiente para registrar un nuevo estudiante
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
+const createUser = async (req, res) => {
+    const {name, password, email} = req.body;
+    const response = await saveStudentService( name, password, email );
+    if (response !== "") {
+        res.json({ user: response });
+    } else {
+        res.status(400).json({ error: "error when creating user" });
+    }
+};
 
+/**
+ * Función usada para llamar al servicio
+ * correspondiente para actualizar un estudiante
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
+const updateUser = async (req, res) => {
+    const { name, password, email } = req.body;
+    const identification = req.params.identification;
+    const response = await updateStudentService(identification, name, password, email);
+    if (response > 0) {
+        res.json({ message: "user updated successfully" });
+    } else {
+        res.status(400).json({ error: "error when updating user" });
+    }
+};
+
+/**
+ * Función usada para llamar al servicio
+ * correspondiente para eliminar un estudiante
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
+const deleteUser = async (req, res) => {
+    const identification = req.params.identification;
+    const response = await deleteStudentService(identification);
+    if (response > 0) {
+        res.json({ message: "user deleted successfully" });
+        res.status(200);
+    } else {
+        res.status(404).json({ message: "user not found" });
+    }
+};
+
+/**
+ * Función usada para llamar al servicio
+ * correspondiente para buscar un estudiante
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
 const getUser = async (req, res) => {
-    const _id = req.params._id;
-    const response = await findOneStudentService(_id);
+    const identification = req.params.identification;
+    const response = await findOneStudentService(identification);
     if (response.length > 0) {
         res.json({ response });
     } else {
@@ -18,7 +72,12 @@ const getUser = async (req, res) => {
     }
 };
 
-
+/**
+ * Función usada para llamar al servicio
+ * correspondiente para buscar todos los estudiantes
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
 const getUsers = async (req, res) => {
     const response = await findAllStudentService();
     if (response.length > 0) {
@@ -28,39 +87,5 @@ const getUsers = async (req, res) => {
     }
 };
 
-
-const createUser = async (req, res) => {
-    const { name, password, email } = req.body;
-    const response = await saveStudentService(name, password, email);
-    if (response !== "") {
-        res.json({ identification: response });
-    } else {
-        res.status(400).json({ error: "error when creating student" });
-    }
-};
-
-
-const updateUser = async (req, res) => {
-    const { name, password, email } = req.body;
-    const _id = req.params._id;
-    const response = await updateStudentService(_id, name, password, email);
-    if (response > 0) {
-        res.json({ message: "student updated successfully" });
-    } else {
-        res.status(400).json({ error: "error when updating student" });
-    }
-};
-
-
-const deleteUser = async (req, res) => {
-    const _id = req.params._id;
-    const response = await deleteStudentService(_id);
-    if (response > 0) {
-        res.json({ message: "student deleted successfully" });
-        res.status(200);
-    } else {
-        res.status(404).json({ message: "student not found" });
-    }
-};
 
 module.exports = { getUser, getUsers, createUser, updateUser, deleteUser };

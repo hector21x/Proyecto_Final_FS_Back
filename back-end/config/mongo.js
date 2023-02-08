@@ -1,27 +1,13 @@
-'use strict';
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 
-const DB_URI = "mongodb://localhost:3000";
+const DB_URI = "mongodb+srv://ninigo93:ni37457005@cluster0.bkgyget.mongodb.net/test";
+
+mongoose.connect(DB_URI,{useNewUrlParser : true});
 
 
-module.exports = () => {
-    const mongoDBConnect = () => {
-        mongoose.connect(
-            DB_URI,
-            {
-                keepAlive: true,
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            },
-            (err) => {
-                if (err) {
-                    console.log('DB ERROR')
-                } else {
-                    console.log('conexion correcta')
-                }
-            }
-        )
-    }
-    mongoDBConnect();
-};
+const connection= mongoose.connection;
+
+connection.once("open", () => {
+    console.log("DB  conectada");
+})

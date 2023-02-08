@@ -1,27 +1,43 @@
+'use strict'
 const modelUser = require('../model/user.js');
 
 const crypto = require("crypto");
 
-
+/**
+ * Método usado para actualizar un estudiante
+ * a través de su identificación y devolver un json
+ * con el mensaje student registered successfully
+ * si se encuentra el estudiante ya cargado devuelve un json
+ * con el mensaje "student already exists"
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
 const saveStudentService = async (name, password, email) => {
     try {
-        const _id = crypto.randomUUID();
-        await modelUser.create({
-            _id,
+        const identification = crypto.randomUUID();
+        const userService= await modelUser.create({
+            identification,
             name,
             password,
-            email,
+            email
         });
-        return _id;
+        return userService;
     } catch (error) {
         return "";
-    }
+    };
 };
 
-const updateStudentService = async (_id, name, password, email) => {
+/**
+ * Método usado para actualizar un estudiante
+ * a través de su identificación y devolver un json
+ * con el mensaje student updated successfully
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
+const updateStudentService = async (identification, name, password, email) => {
     try {
         const result = await modelUser.updateOne(
-            { _id: `${_id}` },
+            { identification: `${identification}` },
             {
                 name,
                 password,
@@ -34,11 +50,19 @@ const updateStudentService = async (_id, name, password, email) => {
     }
 };
 
-
-const deleteStudentService = async (_id) => {
+/**
+ * Método usado para eliminar un estudiante
+ * a través de su identificación y devolver un json
+ * con el mensaje student deleted successfully
+ * si no se encuentra el estudiante devuelve un json
+ * con el mensaje "student not found"
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
+const deleteStudentService = async (identification) => {
     try {
         const deleted = await modelUser.deleteOne({
-            _id: `${_id}`,
+            identification: `${identification}`,
         });
         return deleted.deletedCount;
     } catch (error) {
@@ -46,10 +70,17 @@ const deleteStudentService = async (_id) => {
     }
 };
 
-
-const findOneStudentService = async (_id) => {
+/**
+ * Método usado para buscar un estudiante
+ * a través de su identificación y devolverlo en la
+ * respuesta http por medio de un json excluyendo el _id y el __v
+ * en la respuesta por medio de los métodos .select("-_id").select("-__v") línea 126
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
+const findOneStudentService = async (identification) => {
     try {
-        const student = await modelUser.find({ _id })
+        const student = await modelUser.find({ identification })
             .select("-_id")
             .select("-__v");
         return student;
@@ -58,7 +89,14 @@ const findOneStudentService = async (_id) => {
     }
 };
 
-
+/**
+ * Método usado para buscar todos los estudiantes
+ * registrados y devolverlos en la
+ * respuesta http por medio de un json excluyendo el _id y el __v
+ * en la respuesta por medio de los métodos .select("-_id").select("-__v") línea 106
+ * @param {*HttpRequest} req
+ * @param {*HttpResponse} res
+ */
 const findAllStudentService = async () => {
     try {
         const student = await modelUser.find({}).select("-_id").select("-__v");
