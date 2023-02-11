@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    identification: {
+    id: {
         type: String,
         required: true
     },
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-}, { collection: 'students' }
+}, { collection: 'users' }
 );
 
 module.exports = userSchema;

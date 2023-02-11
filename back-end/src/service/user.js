@@ -4,20 +4,16 @@ const modelUser = require('../model/user.js');
 const crypto = require("crypto");
 
 /**
- * Método usado para actualizar un estudiante
- * a través de su identificación y devolver un json
- * con el mensaje student registered successfully
- * si se encuentra el estudiante ya cargado devuelve un json
- * con el mensaje "student already exists"
+ * Método usado para crear un estudiante"
  * @param {*HttpRequest} req
  * @param {*HttpResponse} res
  */
-const saveStudentService = async (name, password, email) => {
+const saveStudentService = async (user_name, password, email) => {
     try {
         const identification = crypto.randomUUID();
         const userService= await modelUser.create({
             identification,
-            name,
+            user_name,
             password,
             email
         });
@@ -28,18 +24,16 @@ const saveStudentService = async (name, password, email) => {
 };
 
 /**
- * Método usado para actualizar un estudiante
- * a través de su identificación y devolver un json
- * con el mensaje student updated successfully
+ * Método usado para actualizar un estudiante"
  * @param {*HttpRequest} req
  * @param {*HttpResponse} res
  */
-const updateStudentService = async (identification, name, password, email) => {
+const updateStudentService = async (identification, user_name, password, email) => {
     try {
         const result = await modelUser.updateOne(
             { identification: `${identification}` },
             {
-                name,
+                user_name,
                 password,
                 email,
             }
@@ -51,11 +45,7 @@ const updateStudentService = async (identification, name, password, email) => {
 };
 
 /**
- * Método usado para eliminar un estudiante
- * a través de su identificación y devolver un json
- * con el mensaje student deleted successfully
- * si no se encuentra el estudiante devuelve un json
- * con el mensaje "student not found"
+ * Método usado para eliminar un estudiante"
  * @param {*HttpRequest} req
  * @param {*HttpResponse} res
  */
@@ -71,10 +61,7 @@ const deleteStudentService = async (identification) => {
 };
 
 /**
- * Método usado para buscar un estudiante
- * a través de su identificación y devolverlo en la
- * respuesta http por medio de un json excluyendo el _id y el __v
- * en la respuesta por medio de los métodos .select("-_id").select("-__v") línea 126
+ * Método usado para buscar un estudiante"
  * @param {*HttpRequest} req
  * @param {*HttpResponse} res
  */
@@ -90,10 +77,7 @@ const findOneStudentService = async (identification) => {
 };
 
 /**
- * Método usado para buscar todos los estudiantes
- * registrados y devolverlos en la
- * respuesta http por medio de un json excluyendo el _id y el __v
- * en la respuesta por medio de los métodos .select("-_id").select("-__v") línea 106
+ * Método usado para buscar todos los estudiantes"
  * @param {*HttpRequest} req
  * @param {*HttpResponse} res
  */

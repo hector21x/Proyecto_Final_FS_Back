@@ -8,13 +8,13 @@ const {
 
 /**
  * Función usada para llamar al servicio
- * correspondiente para registrar un nuevo estudiante
+ * correspondiente para crear un nuevo estudiante
  * @param {*HttpRequest} req
  * @param {*HttpResponse} res
  */
 const createUser = async (req, res) => {
-    const {name, password, email} = req.body;
-    const response = await saveStudentService( name, password, email );
+    const {user_name, password, email} = req.body;
+    const response = await saveStudentService( user_name, password, email );
     if (response !== "") {
         res.json({ user: response });
     } else {
@@ -29,9 +29,9 @@ const createUser = async (req, res) => {
  * @param {*HttpResponse} res
  */
 const updateUser = async (req, res) => {
-    const { name, password, email } = req.body;
+    const { user_name, password, email } = req.body;
     const identification = req.params.identification;
-    const response = await updateStudentService(identification, name, password, email);
+    const response = await updateStudentService(identification, user_name, password, email);
     if (response > 0) {
         res.json({ message: "user updated successfully" });
     } else {

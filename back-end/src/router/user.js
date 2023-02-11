@@ -6,10 +6,9 @@ const { getUser, getUsers, createUser, updateUser, deleteUser } = require('../co
 const router = express.Router();
 
 
-router.get('/users', getUsers);
+router.get('/getUsers', getUsers);
 
-router.get('/user/:identification', getUser);
-
+router.get('/getUser/:identification', getUser);
 router.post("/create", createUser);
 
 router.patch('/update/:identification', updateUser);

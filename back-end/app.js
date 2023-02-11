@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const router = require('./src/router/user.js');
 const routerFile = require('./src/router/file.js');
-
+const userRouter = require('./src/router/userRouter.js');
 const app = express();
 
 app.use((req, res, next) => {
@@ -23,7 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/api', router);
-app.use('/api', routerFile)
+app.use('/api', routerFile);
+app.use(userRouter);
 
 
 module.exports = app;
