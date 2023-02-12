@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 
-const DB_URI = "mongodb+srv://ninigo93:ni37457005@cluster0.bkgyget.mongodb.net/test";
+const DB_URI = "mongodb+srv://hector21x:JU2811ra@cluster0.e7zgcel.mongodb.net/test";
 
 mongoose.connect(DB_URI,{useNewUrlParser : true});
 
